@@ -1,0 +1,23 @@
+{{template "body" .}} 
+
+<div class="container-fluid p-0">
+	<div class="row mb-2 mb-xl-3">
+		<div class="col-auto d-none d-sm-block">
+			<h3>Profile</h3>
+		</div>
+		<form action ="#" method="POST">
+			<div class="mb-3">
+				<label class="form-label">Token</label>
+				<input type="text" name="token" value="{{ .Main.User.GetToken }}" class="form-control">
+				<span class="font-13 text-muted">Enter here token from <a href='https://www.tinkoff.ru/invest/settings/'>https://www.tinkoff.ru/invest/settings/</a></span>
+			</div>					
+			<div class="card-body text-center">
+				<div class="mb-3" align='right'>
+					<button class="btn btn-outline-primary">Save</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+{{template "footer" .}} 
