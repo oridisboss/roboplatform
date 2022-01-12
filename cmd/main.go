@@ -21,10 +21,10 @@ func main() {
 	Menues = MainMenu
 
 	mux := http.NewServeMux()
-	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("../static/css"))))
-	mux.Handle("/fonts/", http.StripPrefix("/fonts/", http.FileServer(http.Dir("../static/fonts"))))
-	mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("../static/js"))))
-	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("../static/img"))))
+	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("static/css"))))
+	mux.Handle("/fonts/", http.StripPrefix("/fonts/", http.FileServer(http.Dir("static/fonts"))))
+	mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("static/js"))))
+	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("static/img"))))
 
 	for i := range Menues {
 		for j := range Menues[i].Items {
