@@ -1,15 +1,15 @@
-module github.com/roboplatform/cmd
-
-replace github.com/roboplatform/investAPI => ../investAPI
+module github.com/oridisboss/roboplatform
 
 go 1.17
 
 require (
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/oridisboss/investAPI v0.0.0-20220111175240-31c51fd7bdb8
 	google.golang.org/grpc v1.43.0
-	gorm.io/driver/mysql v1.2.3
 	gorm.io/gorm v1.22.4
 )
+
+require github.com/mattn/go-sqlite3 v1.14.9 // indirect
 
 require (
 	github.com/golang/protobuf v1.5.0 // indirect
@@ -20,4 +20,6 @@ require (
 	golang.org/x/text v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
+	gorm.io/driver/mysql v1.2.3
+	gorm.io/driver/sqlite v1.2.6
 )

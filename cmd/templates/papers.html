@@ -1,83 +1,76 @@
-{{template "body" .}} 
+{{template "body" .}}
 
-					<div class="row">
-						<div class="col-12 col-lg-8">
-							<div class="tab">
-								<ul class="nav nav-tabs" role="tablist">
-									<li class="nav-item"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab">Shares</a></li>
-									<li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab">Bond</a></li>
-									<li class="nav-item"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">ETFs</a></li>
-									<li class="nav-item"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">Futures</a></li>
-									<li class="nav-item"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">Currencies</a></li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active" id="tab-1" role="tabpanel">
-<div class="mb-3">
-	<button class="btn btn-primary">Reload shares</button>
-</div>
-										<div class="card">
-											<div class="card-body">
-
-
-<table id="datatables-fixed-header" class="table table-striped" style="width:100%">
-										<thead>
-												<th>#</th>
-												<th>Ticker</th>
-												<th>Figi</th>
-												<th>Name</th>
-										</thead>
-										
-										<tbody>
-
-{{range $key, $value := .Papers}}
-										<tr>
-											<td>{{$key}}</td>
-											<td>{{$value.Ticker}}</td>
-											<td>{{$value.FIGI}}</td>
-											<td><a href='#' onclick="$('#details').html('{{$value.TcsParams}}')">{{$value.Name}}</a></td>
-										</tr>
+<div class="row">
+	<div class="col-12 col-lg-8">
+		<div class="mb-3">
+			<form action="#" method="POST">
+				<input type='hidden' name="type" value="{{$.PaperTypeName}}">
+				<button class="btn btn-primary">Reload {{$.PaperTypeName}}</button>
+			</form>
+		</div>
+		<div class="tab">
+			<ul class="nav nav-tabs" role="tablist">
+{{range $key, $value := .PaperTypes}}
+				<li class="nav-item"><a class="nav-link" href="#tab-{{$value.Name}}" data-bs-toggle="tab" role="tab">{{$value.Name}}</a></li>
 {{end}}
-									</tbody>
-								</table>
+			</ul>
 
+			<div class="tab-content">
+{{range $key, $value := .PaperTypes}}
+				<div class="tab-pane" id="tab-{{$value.Name}}" role="tabpanel">
+					<div class="card">
+						<div class="card-body">
+							<table id="datatables-fixed-header-{{$value.Name}}" class="table table-striped" style="width:100%">
+								<thead>
+									<th>#</th>
+									<th>Ticker</th>
+									<th>Figi</th>
+									<th>Name</th>
+								</thead>
 
-			                                                                </div>
-										</div>
-									</div>
-									<div class="tab-pane" id="tab-2" role="tabpanel">
-										<h4 class="tab-title">Another one</h4>
-										<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor tellus eget condimentum
-											rhoncus. Aenean massa. Cum sociis natoque penatibus et magnis neque dis parturient montes, nascetur ridiculus mus.
-										</p>
-										<p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede
-											justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-											justo.</p>
-									</div>
-									<div class="tab-pane" id="tab-3" role="tabpanel">
-										<h4 class="tab-title">One more</h4>
-										<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor tellus eget condimentum
-											rhoncus. Aenean massa. Cum sociis natoque penatibus et magnis neque dis parturient montes, nascetur ridiculus mus.
-										</p>
-										<p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede
-											justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-											justo.</p>
-									</div>
-								</div>
-								</div>
-								</div>
-						<div class="col-12 col-lg-2">
-							<div class="tab">     <h3>Details</h3>
-								<p id='details'></p>
-							</div>
+								<tbody>
+
+									{{range $key, $valuePaper := $value.Papers}}
+									<tr>
+										<td>{{$key}}</td>
+										<td>{{$valuePaper.Ticker}}</td>
+										<td>{{$valuePaper.FIGI}}</td>
+										<td><a href='#'
+												onclick='$("#details").html(JSON.stringify(JSON.parse("{{$valuePaper.Extra}}"),null,4))'>{{$valuePaper.Name}}</a>
+										</td>
+									</tr>
+									{{end}}
+								</tbody>
+							</table>
 						</div>
+					</div>
+				</div>
+{{end}}
+			</div>
+		</div>
+	</div>
+	<div class="col-12 col-lg-4">
+		<div class="tab">
+			<h3>Details</h3>
+			<code>
+				<pre id='details' style="font-size: 12px">
+
+				</pre>
+			</code>
+		</div>
+	</div>
 
 
 	<script src="js/datatables.js"></script>
 
 	<script>
-		document.addEventListener("DOMContentLoaded", function() {
+		document.addEventListener("DOMContentLoaded", function () {
 			// Datatables Fixed Header
-			$("#datatables-fixed-header").DataTable({
+			$("#datatables-fixed-header-All").DataTable({
+				fixedHeader: true,
+				pageLength: 25
+			});
+			$("#datatables-fixed-header-Base").DataTable({
 				fixedHeader: true,
 				pageLength: 25
 			});
@@ -85,4 +78,4 @@
 	</script>
 
 
-{{template "footer" .}} 
+	{{template "footer" .}}

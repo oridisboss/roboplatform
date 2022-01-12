@@ -21,6 +21,17 @@ type TPLData struct {
 	User       User
 }
 
+type PaperType struct {
+	Name   string
+	Papers []Paper
+}
+
+type ProfileData struct {
+	Main          TPLData
+	PaperTypes    []PaperType
+	PaperTypeName string
+}
+
 type MainTPLData struct {
 	Main TPLData
 }
@@ -49,14 +60,23 @@ func GetTemplatesFiles(extraFile string) []string {
 }
 
 var MainMenu = []menuTree{
-	{"Data", []menuItem{
-		{"Robots", "/robots", profileHandler},
-		{"Shares", "/papers", papersHandler},
-	},
-	},
-	{"System", []menuItem{
-		{"Home", "/", indexHandler},
+	{"Main", []menuItem{
+		{"Index", "/", logHandler},
 		{"Profile", "/profile", profileHandler},
+	},
+	},
+
+	{"Papers", []menuItem{
+		{"Shares", "/shares", papersHandler},
+		{"ETFs", "/etfs", papersHandler},
+		{"Bonds", "/bonds", papersHandler},
+		{"Futures", "/futures", papersHandler},
+		{"Currencies", "/currencies", papersHandler},
+	},
+	},
+
+	{"System", []menuItem{
+		{"Logs", "/logs", logHandler},
 	},
 	},
 }

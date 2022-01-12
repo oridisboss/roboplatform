@@ -2,55 +2,56 @@ package main
 
 import "sync"
 
+var muPapers sync.Mutex
+var gPapers map[string]*[]Paper
+
 //GetPaper is xxx
 func GetPaper(paperID int64) Paper {
 	var p Paper
+	muPapers.Lock()
 	dbg.First(&p, paperID)
+	muPapers.Unlock()
 	return p
 }
 
 //GetPaper is xxx
 func GetPaperByFIGI(figi string) Paper {
 	var p Paper
+	muPapers.Lock()
 	dbg.Where("FIGI=?", figi).First(&p)
+	muPapers.Unlock()
 	return p
 }
 
-var muPapers sync.Mutex
-var gPapers map[int]*[]Paper
-
-//GetSectors is xxx
-func GetSectors() []Sector {
-	var sectors []Sector
-	dbg.Find(&sectors)
-	return sectors
+func ClearPapers() {
+	muPapers.Lock()
+	gPapers = nil
+	muPapers.Unlock()
 }
 
-//GetCountries is xxx
-func GetCountries() []Countries {
-	var countries []Countries
-	dbg.Find(&countries)
-	return countries
-}
+//GetPapers return list of all papers
+func GetPapers(PaperType string, param string) *[]Paper {
+	index := PaperType + param
 
-//GetPapers is xxx
-func GetPapers(exchangeID int) *[]Paper {
 	muPapers.Lock()
 	if len(gPapers) == 0 {
-		gPapers = make(map[int]*[]Paper)
+		gPapers = make(map[string]*[]Paper)
 	}
-	if gPapers[exchangeID] == nil {
-		gPapers[exchangeID] = new([]Paper)
+	if gPapers[index] == nil {
+		gPapers[index] = new([]Paper)
 	}
-	if len(*gPapers[exchangeID]) == 0 {
-		if exchangeID == 0 {
-			dbg.Find(gPapers[exchangeID])
+
+	if len(*gPapers[index]) == 0 {
+		if param == "" {
+			dbg.Where("Type='" + PaperType + "'").Find(gPapers[index])
 		} else {
-			dbg.Where("exchange_id=?", exchangeID).Find(gPapers[exchangeID])
+			println("Type='" + PaperType + "' AND " + param)
+			dbg.Where("Type='" + PaperType + "' AND " + param).Find(gPapers[index])
 		}
 	}
 	muPapers.Unlock()
-	return gPapers[exchangeID]
+
+	return gPapers[index]
 }
 
 //GetPapersBySector is xxx
