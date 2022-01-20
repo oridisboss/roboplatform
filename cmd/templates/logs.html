@@ -1,0 +1,47 @@
+{{template "body" .}}
+
+<div class="row">
+	<div class="col-12 col-lg-10">
+		<div class="tab-content">
+			<div class="card">
+				<div class="card-body">
+					<table id="datatables-fixed-header" class="table table-striped" style="width:100%">
+						<thead>
+							<th>#</th>
+							<th>Dt</th>
+							<th>Method</th>
+							<th>Duration</th>
+							<th>Responce</th>
+						</thead>
+						<tbody>
+							{{range $key, $value := .Logs}}
+							<tr>
+								<td>{{$key}}</td>
+								<td>{{$value.Dt}}</td>
+								<td>{{$value.Url}}</td>
+								<td>{{$value.Duration}}</td>
+								<td>{{$value.Responce}}</td>
+							</tr>
+							{{end}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="js/datatables.js"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		// Datatables Fixed Header
+		$("#datatables-fixed-header").DataTable({
+			fixedHeader: true,
+			pageLength: 25
+		});
+	});
+</script>
+
+
+{{template "footer" .}}

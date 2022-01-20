@@ -8,15 +8,18 @@ import (
 )
 
 func logHandler(w http.ResponseWriter, r *http.Request) {
-	var tpl = template.Must(template.ParseFiles(GetTemplatesFiles("screener.html")...))
-	tpl.Execute(w, GetMainTPLData(r))
+	var tpl = template.Must(template.ParseFiles(GetTemplatesFiles("logs.html")...))
+	var data LogData
+	data.Main = GetTPLData(r)
+	dbg.Find(&data.Logs)
+	tpl.Execute(w, data)
 }
 
 func papersHandler(w http.ResponseWriter, r *http.Request) {
 	var tpl = template.Must(template.ParseFiles(GetTemplatesFiles("papers.html")...))
 	url := strings.ReplaceAll(r.RequestURI, "/", "")
 
-	var data ProfileData
+	var data PaperData
 	data.Main = GetTPLData(r)
 	data.PaperTypeName = url
 

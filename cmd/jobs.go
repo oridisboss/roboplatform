@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 
 	ia "github.com/oridisboss/investAPI"
@@ -28,13 +29,21 @@ func LoadPapers(Type string) {
 func LoadFutures(Type string) {
 	var ir ia.InstrumentsRequest
 	ir.InstrumentStatus = ia.InstrumentStatus_INSTRUMENT_STATUS_ALL
+	var l LogItem
+	l.StartLog("Instruments.Futures " + ir.String())
+
 	r, err := Instruments.Futures(ctx, &ir)
 	if err != nil {
 		st := conn.GetState()
-		log.Printf("Error loading %s  %v %v \n", Type, err, st)
+		text := fmt.Sprintf("Error loading %s  %v %v \n", Type, err, st)
+		l.StopLog(text)
+
 		return
 	}
+	l.StopLog("OK")
+
 	shares := r.GetInstruments()
+
 	for i := range shares {
 		p := GetPaperByFIGI(shares[i].Figi)
 
@@ -63,10 +72,15 @@ func LoadFutures(Type string) {
 func LoadEtfs(Type string) {
 	var ir ia.InstrumentsRequest
 	ir.InstrumentStatus = ia.InstrumentStatus_INSTRUMENT_STATUS_ALL
+
+	var l LogItem
+	l.StartLog("Instruments.Etfs " + ir.String())
+
 	r, err := Instruments.Etfs(ctx, &ir)
 	if err != nil {
 		st := conn.GetState()
-		log.Printf("Error loading %s  %v %v \n", Type, err, st)
+		text := fmt.Sprintf("Error loading %s  %v %v \n", Type, err, st)
+		l.StopLog(text)
 		return
 	}
 	shares := r.GetInstruments()
@@ -98,12 +112,19 @@ func LoadEtfs(Type string) {
 func LoadCurrencies(Type string) {
 	var ir ia.InstrumentsRequest
 	ir.InstrumentStatus = ia.InstrumentStatus_INSTRUMENT_STATUS_ALL
+
+	var l LogItem
+	l.StartLog("Instruments.Currencies " + ir.String())
+
 	r, err := Instruments.Currencies(ctx, &ir)
 	if err != nil {
 		st := conn.GetState()
-		log.Printf("Error loading %s  %v %v \n", Type, err, st)
+		text := fmt.Sprintf("Error loading %s  %v %v \n", Type, err, st)
+		l.StopLog(text)
 		return
 	}
+	l.StopLog("OK")
+
 	shares := r.GetInstruments()
 	for i := range shares {
 		p := GetPaperByFIGI(shares[i].Figi)
@@ -133,12 +154,19 @@ func LoadCurrencies(Type string) {
 func LoadShare(Type string) {
 	var ir ia.InstrumentsRequest
 	ir.InstrumentStatus = ia.InstrumentStatus_INSTRUMENT_STATUS_ALL
+
+	var l LogItem
+	l.StartLog("Instruments.Shares " + ir.String())
+
 	r, err := Instruments.Shares(ctx, &ir)
 	if err != nil {
 		st := conn.GetState()
-		log.Printf("Error loading %s  %v %v \n", Type, err, st)
+		text := fmt.Sprintf("Error loading %s  %v %v \n", Type, err, st)
+		l.StopLog(text)
 		return
 	}
+	l.StopLog("OK")
+
 	shares := r.GetInstruments()
 	for i := range shares {
 		p := GetPaperByFIGI(shares[i].Figi)
@@ -168,12 +196,18 @@ func LoadShare(Type string) {
 func LoadBonds(Type string) {
 	var ir ia.InstrumentsRequest
 	ir.InstrumentStatus = ia.InstrumentStatus_INSTRUMENT_STATUS_ALL
+	var l LogItem
+	l.StartLog("Instruments.Bonds " + ir.String())
+
 	r, err := Instruments.Bonds(ctx, &ir)
 	if err != nil {
 		st := conn.GetState()
-		log.Printf("Error loading %s  %v %v \n", Type, err, st)
+		text := fmt.Sprintf("Error loading %s  %v %v \n", Type, err, st)
+		l.StopLog(text)
 		return
 	}
+	l.StopLog("OK")
+
 	log.Println("loading... \n", err)
 	shares := r.GetInstruments()
 	for i := range shares {

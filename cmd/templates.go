@@ -26,10 +26,15 @@ type PaperType struct {
 	Papers []Paper
 }
 
-type ProfileData struct {
+type PaperData struct {
 	Main          TPLData
 	PaperTypes    []PaperType
 	PaperTypeName string
+}
+
+type LogData struct {
+	Main TPLData
+	Logs []LogItem
 }
 
 type MainTPLData struct {

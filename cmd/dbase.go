@@ -16,4 +16,5 @@ func DatabaseInit() {
 	}
 	dbg.AutoMigrate(&Paper{})
 	dbg.AutoMigrate(&Setting{})
+	dbg.AutoMigrate(&LogItem{})
 }
